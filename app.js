@@ -12,6 +12,7 @@ const totalTallos=document.getElementById("totalTallos");
 const totalHoras=document.getElementById("totalHoras");
 const rendimientoAcumulado=document.getElementById("rendimientoAcumulado");
 const nombreResumen=document.getElementById("nombreResumen");
+const desbotonadorEnCama=document.getElementById("desbotonadorEnCama");
 
 let registros=[];
 
@@ -110,6 +111,14 @@ tabs.forEach(tab=>tab.addEventListener("click",()=>activarTab(tab.dataset.tab)))
 function render(){
   const nombre=desbotonadorInput.value.trim();
   nombreResumen.textContent=nombre ? "Desbotonador: "+nombre : "Aún no hay desbotonador activo.";
+
+  if(nombre){
+    desbotonadorEnCama.textContent=nombre;
+    desbotonadorEnCama.hidden=false;
+  }else{
+    desbotonadorEnCama.textContent="";
+    desbotonadorEnCama.hidden=true;
+  }
 
   renderTablaTipo("Desbotón Pompón",tablaPompon,"Desbotón Pompón");
   renderTablaTipo("Desbotón Spider",tablaSpider,"Desbotón Spider");
