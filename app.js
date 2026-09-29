@@ -1,5 +1,9 @@
 const form=document.getElementById("formDesbotonado");
-const tabla=document.getElementById("tablaRegistros");
+const tablaPompon=document.getElementById("tablaPompon");
+const tablaSpider=document.getElementById("tablaSpider");
+const tablaMalla=document.getElementById("tablaMalla");
+const tabs=[...document.querySelectorAll(".tab")];
+const panels=[...document.querySelectorAll(".tab-panel")];
 const desbotonadorInput=document.getElementById("desbotonador");
 const btnLimpiarCama=document.getElementById("btnLimpiarCama");
 const btnNuevoDesbotonador=document.getElementById("btnNuevoDesbotonador");
@@ -52,20 +56,39 @@ function limpiarCamposCama(){
   document.getElementById("bloque").focus();
 }
 
+function renderTablaTipo(tipo,tabla,nombre){
+  const filtrados=registros.filter(r=>r.tipoLabor===tipo);
+
+  if(filtrados.length===0){
+    tabla.innerHTML='<tr class="empty-row"><td colspan="6">Todavía no hay registros de '+nombre+'.</td></tr>';
+    return;
+  }
+
+  tabla.innerHTML=filtrados.map(r=>'<tr><td>'+r.bloque+'</td><td>'+r.cama+'</td><td>'+numero(r.mediosCuadros)+'</td><td>'+numero(r.resultado.tallosDesbotonados,2)+'</td><td>'+numero(r.resultado.horasTrabajadas,2)+' h</td><td><strong>'+numero(r.resultado.rendimiento,2)+' tallos/h</strong></td></tr>').join("");
+}
+
+function activarTab(tipo){
+  tabs.forEach(tab=>tab.classList.toggle("active",tab.dataset.tab===tipo));
+  panels.forEach(panel=>panel.classList.toggle("active",panel.dataset.panel===tipo));
+}
+
+tabs.forEach(tab=>tab.addEventListener("click",()=>activarTab(tab.dataset.tab)));
+
 function render(){
   const nombre=desbotonadorInput.value.trim();
   nombreResumen.textContent=nombre ? "Desbotonador: "+nombre : "Aún no hay desbotonador activo.";
 
+  renderTablaTipo("Desbotón Pompón",tablaPompon,"Desbotón Pompón");
+  renderTablaTipo("Desbotón Spider",tablaSpider,"Desbotón Spider");
+  renderTablaTipo("Malla",tablaMalla,"Malla");
+
   if(registros.length===0){
-    tabla.innerHTML='<tr class="empty-row"><td colspan="7">Todavía no hay camas registradas.</td></tr>';
     totalCamas.textContent="0";
     totalTallos.textContent="0";
     totalHoras.textContent="0 h";
     rendimientoAcumulado.textContent="0 tallos/h";
     return;
   }
-
-  tabla.innerHTML=registros.map(r=>'<tr><td>'+r.tipoLabor+'</td><td>'+r.bloque+'</td><td>'+r.cama+'</td><td>'+numero(r.mediosCuadros)+'</td><td>'+numero(r.resultado.tallosDesbotonados,2)+'</td><td>'+numero(r.resultado.horasTrabajadas,2)+' h</td><td><strong>'+numero(r.resultado.rendimiento,2)+' tallos/h</strong></td></tr>').join("");
 
   const tallos=registros.reduce((s,r)=>s+r.resultado.tallosDesbotonados,0);
   const horas=registros.reduce((s,r)=>s+r.resultado.horasTrabajadas,0);
