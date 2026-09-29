@@ -57,14 +57,16 @@ function limpiarCamposCama(){
 }
 
 function renderTablaTipo(tipo,tabla,nombre){
-  const filtrados=registros.filter(r=>r.tipoLabor===tipo);
+  const filtrados=registros
+    .filter(r=>r.tipoLabor===tipo)
+    .sort((a,b)=>a.desbotonador.localeCompare(b.desbotonador,"es"));
 
   if(filtrados.length===0){
-    tabla.innerHTML='<tr class="empty-row"><td colspan="6">Todavía no hay registros de '+nombre+'.</td></tr>';
+    tabla.innerHTML='<tr class="empty-row"><td colspan="7">Todavía no hay registros de '+nombre+'.</td></tr>';
     return;
   }
 
-  tabla.innerHTML=filtrados.map(r=>'<tr><td>'+r.bloque+'</td><td>'+r.cama+'</td><td>'+numero(r.mediosCuadros)+'</td><td>'+numero(r.resultado.tallosDesbotonados,2)+'</td><td>'+numero(r.resultado.horasTrabajadas,2)+' h</td><td><strong>'+numero(r.resultado.rendimiento,2)+' tallos/h</strong></td></tr>').join("");
+  tabla.innerHTML=filtrados.map(r=>'<tr><td><strong>'+r.desbotonador+'</strong></td><td>'+r.bloque+'</td><td>'+r.cama+'</td><td>'+numero(r.mediosCuadros)+'</td><td>'+numero(r.resultado.tallosDesbotonados,2)+'</td><td>'+numero(r.resultado.horasTrabajadas,2)+' h</td><td><strong>'+numero(r.resultado.rendimiento,2)+' tallos/h</strong></td></tr>').join("");
 }
 
 function activarTab(tipo){
@@ -131,7 +133,7 @@ form.addEventListener("submit",event=>{
 
   try{
     const resultado=calcular(datos);
-    registros.push({...datos,resultado});
+    registros.push({desbotonador,...datos,resultado});
     render();
     limpiarCamposCama();
   }catch(error){
@@ -143,8 +145,6 @@ desbotonadorInput.addEventListener("input",render);
 btnLimpiarCama.addEventListener("click",limpiarCamposCama);
 
 btnNuevoDesbotonador.addEventListener("click",()=>{
-  if(registros.length>0 && !confirm("¿Desea cerrar este desbotonador e iniciar otro? Se borrarán los registros de esta sesión.")) return;
-  registros=[];
   desbotonadorInput.value="";
   limpiarCamposCama();
   render();
