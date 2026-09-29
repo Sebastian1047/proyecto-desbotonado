@@ -41,6 +41,7 @@ function numero(valor,decimales=1){
 }
 
 function limpiarCamposCama(){
+  document.getElementById("tipoDesbotonado").value="";
   document.getElementById("bloque").value="";
   document.getElementById("cama").value="";
   document.getElementById("tallosCama").value="";
@@ -56,7 +57,7 @@ function render(){
   nombreResumen.textContent=nombre ? "Desbotonador: "+nombre : "Aún no hay desbotonador activo.";
 
   if(registros.length===0){
-    tabla.innerHTML='<tr class="empty-row"><td colspan="6">Todavía no hay camas registradas.</td></tr>';
+    tabla.innerHTML='<tr class="empty-row"><td colspan="7">Todavía no hay camas registradas.</td></tr>';
     totalCamas.textContent="0";
     totalTallos.textContent="0";
     totalHoras.textContent="0 h";
@@ -64,7 +65,7 @@ function render(){
     return;
   }
 
-  tabla.innerHTML=registros.map(r=>'<tr><td>'+r.bloque+'</td><td>'+r.cama+'</td><td>'+numero(r.mediosCuadros)+'</td><td>'+numero(r.resultado.tallosDesbotonados,2)+'</td><td>'+numero(r.resultado.horasTrabajadas,2)+' h</td><td><strong>'+numero(r.resultado.rendimiento,2)+' tallos/h</strong></td></tr>').join("");
+  tabla.innerHTML=registros.map(r=>'<tr><td>'+r.tipoDesbotonado+'</td><td>'+r.bloque+'</td><td>'+r.cama+'</td><td>'+numero(r.mediosCuadros)+'</td><td>'+numero(r.resultado.tallosDesbotonados,2)+'</td><td>'+numero(r.resultado.horasTrabajadas,2)+' h</td><td><strong>'+numero(r.resultado.rendimiento,2)+' tallos/h</strong></td></tr>').join("");
 
   const tallos=registros.reduce((s,r)=>s+r.resultado.tallosDesbotonados,0);
   const horas=registros.reduce((s,r)=>s+r.resultado.horasTrabajadas,0);
@@ -86,6 +87,7 @@ form.addEventListener("submit",event=>{
   }
 
   const datos={
+    tipoDesbotonado:document.getElementById("tipoDesbotonado").value,
     bloque:document.getElementById("bloque").value.trim(),
     cama:document.getElementById("cama").value.trim(),
     tallosCama:Number(document.getElementById("tallosCama").value),
