@@ -66,29 +66,58 @@
     <section class="card">
       <div class="section-heading">
         <div>
-          <h2>Camas del desbotonador</h2>
+          <h2>Registros por tipo de labor</h2>
           <p id="nombreResumen" class="helper">Aún no hay desbotonador activo.</p>
         </div>
         <button type="button" class="danger ghost" id="btnNuevoDesbotonador">Nuevo desbotonador</button>
       </div>
 
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th>Tipo</th>
-              <th>Bloque</th>
-              <th>Cama</th>
-              <th>Medios cuadros</th>
-              <th>Tallos desbotonados</th>
-              <th>Tiempo</th>
-              <th>Rendimiento cama</th>
-            </tr>
-          </thead>
-          <tbody id="tablaRegistros">
-            <tr class="empty-row"><td colspan="7">Todavía no hay camas registradas.</td></tr>
-          </tbody>
-        </table>
+      <nav class="tabs" aria-label="Tipos de labor">
+        <button type="button" class="tab active" data-tab="Desbotón Pompón">Desbotón Pompón</button>
+        <button type="button" class="tab" data-tab="Desbotón Spider">Desbotón Spider</button>
+        <button type="button" class="tab" data-tab="Malla">Malla</button>
+      </nav>
+
+      <div class="tab-panel active" data-panel="Desbotón Pompón">
+        <h3>Desbotón Pompón</h3>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Bloque</th><th>Cama</th><th>Medios cuadros</th><th>Tallos desbotonados</th><th>Tiempo</th><th>Rendimiento cama</th></tr>
+            </thead>
+            <tbody id="tablaPompon">
+              <tr class="empty-row"><td colspan="6">Todavía no hay registros de Desbotón Pompón.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="tab-panel" data-panel="Desbotón Spider">
+        <h3>Desbotón Spider</h3>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Bloque</th><th>Cama</th><th>Medios cuadros</th><th>Tallos desbotonados</th><th>Tiempo</th><th>Rendimiento cama</th></tr>
+            </thead>
+            <tbody id="tablaSpider">
+              <tr class="empty-row"><td colspan="6">Todavía no hay registros de Desbotón Spider.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="tab-panel" data-panel="Malla">
+        <h3>Malla</h3>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Bloque</th><th>Cama</th><th>Medios cuadros</th><th>Tallos desbotonados</th><th>Tiempo</th><th>Rendimiento cama</th></tr>
+            </thead>
+            <tbody id="tablaMalla">
+              <tr class="empty-row"><td colspan="6">Todavía no hay registros de Malla.</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </section>
   </main>
