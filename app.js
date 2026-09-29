@@ -1,17 +1,23 @@
 const form=document.getElementById("formDesbotonado");
 const tabla=document.getElementById("tablaRegistros");
-const btnLimpiar=document.getElementById("btnLimpiar");
-const btnBorrarRegistros=document.getElementById("btnBorrarRegistros");
-const salida={tallosReales:document.getElementById("tallosReales"),tallosMedioCuadro:document.getElementById("tallosMedioCuadro"),tallosDesbotonados:document.getElementById("tallosDesbotonados"),rendimiento:document.getElementById("rendimiento")};
+const desbotonadorInput=document.getElementById("desbotonador");
+const btnLimpiarCama=document.getElementById("btnLimpiarCama");
+const btnNuevoDesbotonador=document.getElementById("btnNuevoDesbotonador");
+const totalCamas=document.getElementById("totalCamas");
+const totalTallos=document.getElementById("totalTallos");
+const totalHoras=document.getElementById("totalHoras");
+const rendimientoAcumulado=document.getElementById("rendimientoAcumulado");
+const nombreResumen=document.getElementById("nombreResumen");
+
 let registros=[];
 
 function horasEntre(inicio,fin){
   const [hi,mi]=inicio.split(":").map(Number);
   const [hf,mf]=fin.split(":").map(Number);
-  const minutosInicio=hi*60+mi;
-  let minutosFin=hf*60+mf;
-  if(minutosFin<minutosInicio) minutosFin+=24*60;
-  return (minutosFin-minutosInicio)/60;
+  const inicioMin=hi*60+mi;
+  let finMin=hf*60+mf;
+  if(finMin<inicioMin) finMin+=24*60;
+  return (finMin-inicioMin)/60;
 }
 
 function calcular(datos){
@@ -21,33 +27,65 @@ function calcular(datos){
   const tallosDesbotonados=tallosPorMedioCuadro*datos.mediosCuadros;
   const horasTrabajadas=horasEntre(datos.horaInicio,datos.horaFin);
   if(horasTrabajadas<=0) throw new Error("La hora final debe ser diferente de la hora inicial.");
-  const rendimiento=tallosDesbotonados/horasTrabajadas;
-  return {tallosReales,tallosPorMedioCuadro,tallosDesbotonados,horasTrabajadas,rendimiento};
+  return {
+    tallosReales,
+    tallosPorMedioCuadro,
+    tallosDesbotonados,
+    horasTrabajadas,
+    rendimiento:tallosDesbotonados/horasTrabajadas
+  };
 }
 
 function numero(valor,decimales=1){
   return new Intl.NumberFormat("es-CO",{maximumFractionDigits:decimales}).format(valor);
 }
 
-function mostrarResultado(r){
-  salida.tallosReales.textContent=numero(r.tallosReales);
-  salida.tallosMedioCuadro.textContent=numero(r.tallosPorMedioCuadro,2);
-  salida.tallosDesbotonados.textContent=numero(r.tallosDesbotonados,2);
-  salida.rendimiento.textContent=numero(r.rendimiento,2)+" tallos/h";
+function limpiarCamposCama(){
+  document.getElementById("bloque").value="";
+  document.getElementById("cama").value="";
+  document.getElementById("tallosCama").value="";
+  document.getElementById("erradicaciones").value=0;
+  document.getElementById("mediosCuadros").value=16;
+  document.getElementById("horaInicio").value="";
+  document.getElementById("horaFin").value="";
+  document.getElementById("bloque").focus();
 }
 
-function renderTabla(){
+function render(){
+  const nombre=desbotonadorInput.value.trim();
+  nombreResumen.textContent=nombre ? "Desbotonador: "+nombre : "Aún no hay desbotonador activo.";
+
   if(registros.length===0){
-    tabla.innerHTML='<tr class="empty-row"><td colspan="7">Todavía no hay registros.</td></tr>';
+    tabla.innerHTML='<tr class="empty-row"><td colspan="6">Todavía no hay camas registradas.</td></tr>';
+    totalCamas.textContent="0";
+    totalTallos.textContent="0";
+    totalHoras.textContent="0 h";
+    rendimientoAcumulado.textContent="0 tallos/h";
     return;
   }
-  tabla.innerHTML=registros.map(r=>'<tr><td>'+r.desbotonador+'</td><td>'+r.bloque+'</td><td>'+r.cama+'</td><td>'+numero(r.mediosCuadros)+'</td><td>'+numero(r.resultado.tallosDesbotonados,2)+'</td><td>'+numero(r.resultado.horasTrabajadas,2)+' h</td><td><strong>'+numero(r.resultado.rendimiento,2)+' tallos/h</strong></td></tr>').join("");
+
+  tabla.innerHTML=registros.map(r=>'<tr><td>'+r.bloque+'</td><td>'+r.cama+'</td><td>'+numero(r.mediosCuadros)+'</td><td>'+numero(r.resultado.tallosDesbotonados,2)+'</td><td>'+numero(r.resultado.horasTrabajadas,2)+' h</td><td><strong>'+numero(r.resultado.rendimiento,2)+' tallos/h</strong></td></tr>').join("");
+
+  const tallos=registros.reduce((s,r)=>s+r.resultado.tallosDesbotonados,0);
+  const horas=registros.reduce((s,r)=>s+r.resultado.horasTrabajadas,0);
+
+  totalCamas.textContent=registros.length;
+  totalTallos.textContent=numero(tallos,2);
+  totalHoras.textContent=numero(horas,2)+" h";
+  rendimientoAcumulado.textContent=horas>0 ? numero(tallos/horas,2)+" tallos/h" : "0 tallos/h";
 }
 
 form.addEventListener("submit",event=>{
   event.preventDefault();
+
+  const desbotonador=desbotonadorInput.value.trim();
+  if(!desbotonador){
+    alert("Primero escriba el nombre del desbotonador.");
+    desbotonadorInput.focus();
+    return;
+  }
+
   const datos={
-    desbotonador:document.getElementById("desbotonador").value.trim(),
     bloque:document.getElementById("bloque").value.trim(),
     cama:document.getElementById("cama").value.trim(),
     tallosCama:Number(document.getElementById("tallosCama").value),
@@ -56,21 +94,27 @@ form.addEventListener("submit",event=>{
     horaInicio:document.getElementById("horaInicio").value,
     horaFin:document.getElementById("horaFin").value
   };
+
   try{
     const resultado=calcular(datos);
-    mostrarResultado(resultado);
-    registros.unshift({...datos,resultado});
-    renderTabla();
-  }catch(error){alert(error.message);}
+    registros.push({...datos,resultado});
+    render();
+    limpiarCamposCama();
+  }catch(error){
+    alert(error.message);
+  }
 });
 
-btnLimpiar.addEventListener("click",()=>{
-  form.reset();
-  document.getElementById("erradicaciones").value=0;
-  document.getElementById("mediosCuadros").value=16;
-});
+desbotonadorInput.addEventListener("input",render);
+btnLimpiarCama.addEventListener("click",limpiarCamposCama);
 
-btnBorrarRegistros.addEventListener("click",()=>{
+btnNuevoDesbotonador.addEventListener("click",()=>{
+  if(registros.length>0 && !confirm("¿Desea cerrar este desbotonador e iniciar otro? Se borrarán los registros de esta sesión.")) return;
   registros=[];
-  renderTabla();
+  desbotonadorInput.value="";
+  limpiarCamposCama();
+  render();
+  desbotonadorInput.focus();
 });
+
+render();
