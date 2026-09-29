@@ -33,6 +33,14 @@
     <section class="card">
       <h2>Agregar cama</h2>
       <form id="formDesbotonado" class="form-grid">
+        <label>
+          Tipo de desbotonado
+          <select id="tipoDesbotonado" required>
+            <option value="">Seleccione un tipo</option>
+            <option value="Desbotón Pompón">Desbotón Pompón</option>
+            <option value="Desbotón Spider">Desbotón Spider</option>
+          </select>
+        </label>
         <label>Bloque<input id="bloque" type="text" placeholder="Ej. B12" required /></label>
         <label>Número de cama<input id="cama" type="text" placeholder="Ej. 24" required /></label>
         <label>Tallos por cama<input id="tallosCama" type="number" min="0" step="1" required /></label>
@@ -67,6 +75,7 @@
         <table>
           <thead>
             <tr>
+              <th>Tipo</th>
               <th>Bloque</th>
               <th>Cama</th>
               <th>Medios cuadros</th>
@@ -76,7 +85,7 @@
             </tr>
           </thead>
           <tbody id="tablaRegistros">
-            <tr class="empty-row"><td colspan="6">Todavía no hay camas registradas.</td></tr>
+            <tr class="empty-row"><td colspan="7">Todavía no hay camas registradas.</td></tr>
           </tbody>
         </table>
       </div>
