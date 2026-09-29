@@ -40,6 +40,28 @@ function calcular(datos){
   };
 }
 
+const datosPrueba=[
+  {desbotonador:"Ana López",tipoLabor:"Desbotón Pompón",bloque:"B1",cama:"12",tallosCama:1680,erradicaciones:80,mediosCuadros:16,horaInicio:"07:00",horaFin:"07:45"},
+  {desbotonador:"Ana López",tipoLabor:"Desbotón Pompón",bloque:"B1",cama:"13",tallosCama:1720,erradicaciones:72,mediosCuadros:16,horaInicio:"07:50",horaFin:"08:35"},
+  {desbotonador:"Carlos Ruiz",tipoLabor:"Desbotón Pompón",bloque:"B2",cama:"7",tallosCama:1600,erradicaciones:64,mediosCuadros:16,horaInicio:"07:10",horaFin:"07:58"},
+  {desbotonador:"Carlos Ruiz",tipoLabor:"Desbotón Pompón",bloque:"B2",cama:"8",tallosCama:1540,erradicaciones:60,mediosCuadros:12,horaInicio:"08:05",horaFin:"08:40"},
+
+  {desbotonador:"Diana Gómez",tipoLabor:"Desbotón Spider",bloque:"B3",cama:"21",tallosCama:820,erradicaciones:35,mediosCuadros:16,horaInicio:"07:00",horaFin:"08:20"},
+  {desbotonador:"Diana Gómez",tipoLabor:"Desbotón Spider",bloque:"B3",cama:"22",tallosCama:790,erradicaciones:30,mediosCuadros:10,horaInicio:"08:25",horaFin:"09:15"},
+  {desbotonador:"Laura Pérez",tipoLabor:"Desbotón Spider",bloque:"B4",cama:"5",tallosCama:860,erradicaciones:42,mediosCuadros:16,horaInicio:"07:15",horaFin:"08:35"},
+  {desbotonador:"Laura Pérez",tipoLabor:"Desbotón Spider",bloque:"B4",cama:"6",tallosCama:840,erradicaciones:40,mediosCuadros:16,horaInicio:"08:42",horaFin:"10:02"},
+
+  {desbotonador:"Ana López",tipoLabor:"Malla",bloque:"B5",cama:"30",tallosCama:1180,erradicaciones:55,mediosCuadros:16,horaInicio:"09:00",horaFin:"10:05"},
+  {desbotonador:"Ana López",tipoLabor:"Malla",bloque:"B5",cama:"31",tallosCama:1200,erradicaciones:48,mediosCuadros:8,horaInicio:"10:10",horaFin:"10:42"},
+  {desbotonador:"Miguel Torres",tipoLabor:"Malla",bloque:"B6",cama:"14",tallosCama:1250,erradicaciones:62,mediosCuadros:16,horaInicio:"07:20",horaFin:"08:28"},
+  {desbotonador:"Miguel Torres",tipoLabor:"Malla",bloque:"B6",cama:"15",tallosCama:1210,erradicaciones:50,mediosCuadros:14,horaInicio:"08:35",horaFin:"09:35"}
+];
+
+registros=datosPrueba.map(item=>{
+  const {desbotonador,...datos}=item;
+  return {desbotonador,...datos,resultado:calcular(datos)};
+});
+
 function numero(valor,decimales=1){
   return new Intl.NumberFormat("es-CO",{maximumFractionDigits:decimales}).format(valor);
 }
