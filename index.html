@@ -11,13 +11,21 @@
     <section class="hero">
       <p class="eyebrow">Control de rendimiento</p>
       <h1>Proyecto Desbotonado</h1>
-      <p>Registre una labor y calcule automáticamente los tallos desbotonados por hora.</p>
+      <p>Registre varias camas para un mismo desbotonador y calcule su rendimiento acumulado del día.</p>
     </section>
 
     <section class="card">
-      <h2>Nueva labor</h2>
+      <h2>Desbotonador activo</h2>
+      <label class="worker-field">
+        Nombre del desbotonador
+        <input id="desbotonador" type="text" placeholder="Nombre del trabajador" required />
+      </label>
+      <p class="helper">El nombre se mantiene mientras agrega las camas del mismo desbotonador.</p>
+    </section>
+
+    <section class="card">
+      <h2>Agregar cama</h2>
       <form id="formDesbotonado" class="form-grid">
-        <label>Desbotonador<input id="desbotonador" type="text" placeholder="Nombre del trabajador" required /></label>
         <label>Bloque<input id="bloque" type="text" placeholder="Ej. B12" required /></label>
         <label>Número de cama<input id="cama" type="text" placeholder="Ej. 24" required /></label>
         <label>Tallos por cama<input id="tallosCama" type="number" min="0" step="1" required /></label>
@@ -26,33 +34,42 @@
         <label>Hora de inicio<input id="horaInicio" type="time" required /></label>
         <label>Hora de finalización<input id="horaFin" type="time" required /></label>
         <div class="actions">
-          <button type="submit">Calcular y guardar</button>
-          <button type="button" class="secondary" id="btnLimpiar">Limpiar</button>
+          <button type="submit">Agregar cama</button>
+          <button type="button" class="secondary" id="btnLimpiarCama">Limpiar cama</button>
         </div>
       </form>
     </section>
 
     <section class="results-grid" aria-live="polite">
-      <article class="metric"><span>Tallos reales de la cama</span><strong id="tallosReales">0</strong></article>
-      <article class="metric"><span>Tallos por medio cuadro</span><strong id="tallosMedioCuadro">0</strong></article>
-      <article class="metric"><span>Tallos desbotonados</span><strong id="tallosDesbotonados">0</strong></article>
-      <article class="metric highlight"><span>Rendimiento</span><strong id="rendimiento">0 tallos/h</strong></article>
+      <article class="metric"><span>Camas registradas</span><strong id="totalCamas">0</strong></article>
+      <article class="metric"><span>Tallos desbotonados</span><strong id="totalTallos">0</strong></article>
+      <article class="metric"><span>Tiempo trabajado</span><strong id="totalHoras">0 h</strong></article>
+      <article class="metric highlight"><span>Rendimiento acumulado</span><strong id="rendimientoAcumulado">0 tallos/h</strong></article>
     </section>
 
     <section class="card">
       <div class="section-heading">
-        <h2>Registros de la sesión</h2>
-        <button type="button" class="danger ghost" id="btnBorrarRegistros">Borrar registros</button>
+        <div>
+          <h2>Camas del desbotonador</h2>
+          <p id="nombreResumen" class="helper">Aún no hay desbotonador activo.</p>
+        </div>
+        <button type="button" class="danger ghost" id="btnNuevoDesbotonador">Nuevo desbotonador</button>
       </div>
+
       <div class="table-wrap">
         <table>
           <thead>
             <tr>
-              <th>Desbotonador</th><th>Bloque</th><th>Cama</th><th>Medios cuadros</th><th>Tallos desbotonados</th><th>Tiempo</th><th>Rendimiento</th>
+              <th>Bloque</th>
+              <th>Cama</th>
+              <th>Medios cuadros</th>
+              <th>Tallos desbotonados</th>
+              <th>Tiempo</th>
+              <th>Rendimiento cama</th>
             </tr>
           </thead>
           <tbody id="tablaRegistros">
-            <tr class="empty-row"><td colspan="7">Todavía no hay registros.</td></tr>
+            <tr class="empty-row"><td colspan="6">Todavía no hay camas registradas.</td></tr>
           </tbody>
         </table>
       </div>
