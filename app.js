@@ -68,8 +68,17 @@ function renderTablaTipo(tipo,tabla,nombre){
 }
 
 function activarTab(tipo){
-  tabs.forEach(tab=>tab.classList.toggle("active",tab.dataset.tab===tipo));
-  panels.forEach(panel=>panel.classList.toggle("active",panel.dataset.panel===tipo));
+  tabs.forEach(tab=>{
+    const activo=tab.dataset.tab===tipo;
+    tab.classList.toggle("active",activo);
+    tab.setAttribute("aria-selected",activo ? "true" : "false");
+  });
+
+  panels.forEach(panel=>{
+    const activo=panel.dataset.panel===tipo;
+    panel.classList.toggle("active",activo);
+    panel.hidden=!activo;
+  });
 }
 
 tabs.forEach(tab=>tab.addEventListener("click",()=>activarTab(tab.dataset.tab)));
