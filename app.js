@@ -47,6 +47,16 @@ function fechaHoy(){
   return new Intl.DateTimeFormat("es-CO",{day:"2-digit",month:"2-digit",year:"numeric"}).format(new Date());
 }
 
+function numeroSemana(fechaTexto){
+  const partes=fechaTexto.split("/");
+  const fecha=new Date(Number(partes[2]),Number(partes[1])-1,Number(partes[0]));
+  const temp=new Date(fecha.getFullYear(),fecha.getMonth(),fecha.getDate());
+  const dia=temp.getDay()||7;
+  temp.setDate(temp.getDate()+4-dia);
+  const inicioAnio=new Date(temp.getFullYear(),0,1);
+  return Math.ceil((((temp-inicioAnio)/86400000)+1)/7);
+}
+
 const datosPrueba=[
   {desbotonador:"Ana López",tipoLabor:"Desbotón Pompón",bloque:"B1",cama:"12",tallosCama:1680,erradicaciones:80,mediosCuadros:16,horaInicio:"07:00",horaFin:"07:45",descuentoTiempo:0,fecha:"24/09/2026"},
   {desbotonador:"Ana López",tipoLabor:"Desbotón Pompón",bloque:"B1",cama:"13",tallosCama:1720,erradicaciones:72,mediosCuadros:16,horaInicio:"07:50",horaFin:"08:35",descuentoTiempo:0,fecha:"24/09/2026"},
@@ -119,6 +129,7 @@ function renderTablaTipo(tipo,tabla,nombre){
       if(index===0){
         const span=filas.length;
         html+='<td rowspan="'+span+'" class="group-cell">'+fecha+'</td>';
+        html+='<td rowspan="'+span+'" class="group-cell">'+numeroSemana(fecha)+'</td>';
         html+='<td rowspan="'+span+'" class="group-cell collaborator-cell"><strong>'+colaborador+'</strong></td>';
         html+='<td rowspan="'+span+'" class="group-cell">'+inicio+'</td>';
         html+='<td rowspan="'+span+'" class="group-cell">'+fin+'</td>';
