@@ -109,6 +109,12 @@ function estiloRendimiento(tipo,rendimiento){
     return "background-color:rgb(255,99,99);color:#111;";
   }
 
+  if(tipo==="Malla"){
+    if(rendimiento>=2100) return "";
+    if(rendimiento>=2000) return "background-color:rgb(255,235,59);color:#111;";
+    return "background-color:rgb(255,99,99);color:#111;";
+  }
+
   return "";
 }
 
