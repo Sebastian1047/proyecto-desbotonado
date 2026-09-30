@@ -30,32 +30,38 @@ function calcular(datos){
   if(tallosReales<0) throw new Error("Las erradicaciones no pueden ser mayores que los tallos de la cama.");
   const tallosPorMedioCuadro=tallosReales/16;
   const tallosDesbotonados=tallosPorMedioCuadro*datos.mediosCuadros;
-  const horasTrabajadas=horasEntre(datos.horaInicio,datos.horaFin);
-  if(horasTrabajadas<=0) throw new Error("La hora final debe ser diferente de la hora inicial.");
+  const horasBrutas=horasEntre(datos.horaInicio,datos.horaFin);
+  const horasTrabajadas=horasBrutas-(datos.descuentoTiempo||0);
+  if(horasTrabajadas<=0) throw new Error("Las horas laboradas deben ser mayores que cero después de los descuentos.");
   return {
     tallosReales,
     tallosPorMedioCuadro,
     tallosDesbotonados,
+    horasBrutas,
     horasTrabajadas,
     rendimiento:tallosDesbotonados/horasTrabajadas
   };
 }
 
+function fechaHoy(){
+  return new Intl.DateTimeFormat("es-CO",{day:"2-digit",month:"2-digit",year:"numeric"}).format(new Date());
+}
+
 const datosPrueba=[
-  {desbotonador:"Ana López",tipoLabor:"Desbotón Pompón",bloque:"B1",cama:"12",tallosCama:1680,erradicaciones:80,mediosCuadros:16,horaInicio:"07:00",horaFin:"07:45"},
-  {desbotonador:"Ana López",tipoLabor:"Desbotón Pompón",bloque:"B1",cama:"13",tallosCama:1720,erradicaciones:72,mediosCuadros:16,horaInicio:"07:50",horaFin:"08:35"},
-  {desbotonador:"Carlos Ruiz",tipoLabor:"Desbotón Pompón",bloque:"B2",cama:"7",tallosCama:1600,erradicaciones:64,mediosCuadros:16,horaInicio:"07:10",horaFin:"07:58"},
-  {desbotonador:"Carlos Ruiz",tipoLabor:"Desbotón Pompón",bloque:"B2",cama:"8",tallosCama:1540,erradicaciones:60,mediosCuadros:12,horaInicio:"08:05",horaFin:"08:40"},
+  {desbotonador:"Ana López",tipoLabor:"Desbotón Pompón",bloque:"B1",cama:"12",tallosCama:1680,erradicaciones:80,mediosCuadros:16,horaInicio:"07:00",horaFin:"07:45",descuentoTiempo:0,fecha:"24/09/2026"},
+  {desbotonador:"Ana López",tipoLabor:"Desbotón Pompón",bloque:"B1",cama:"13",tallosCama:1720,erradicaciones:72,mediosCuadros:16,horaInicio:"07:50",horaFin:"08:35",descuentoTiempo:0,fecha:"24/09/2026"},
+  {desbotonador:"Carlos Ruiz",tipoLabor:"Desbotón Pompón",bloque:"B2",cama:"7",tallosCama:1600,erradicaciones:64,mediosCuadros:16,horaInicio:"07:10",horaFin:"07:58",descuentoTiempo:0,fecha:"24/09/2026"},
+  {desbotonador:"Carlos Ruiz",tipoLabor:"Desbotón Pompón",bloque:"B2",cama:"8",tallosCama:1540,erradicaciones:60,mediosCuadros:12,horaInicio:"08:05",horaFin:"08:40",descuentoTiempo:0,fecha:"24/09/2026"},
 
-  {desbotonador:"Diana Gómez",tipoLabor:"Desbotón Spider",bloque:"B3",cama:"21",tallosCama:820,erradicaciones:35,mediosCuadros:16,horaInicio:"07:00",horaFin:"08:20"},
-  {desbotonador:"Diana Gómez",tipoLabor:"Desbotón Spider",bloque:"B3",cama:"22",tallosCama:790,erradicaciones:30,mediosCuadros:10,horaInicio:"08:25",horaFin:"09:15"},
-  {desbotonador:"Laura Pérez",tipoLabor:"Desbotón Spider",bloque:"B4",cama:"5",tallosCama:860,erradicaciones:42,mediosCuadros:16,horaInicio:"07:15",horaFin:"08:35"},
-  {desbotonador:"Laura Pérez",tipoLabor:"Desbotón Spider",bloque:"B4",cama:"6",tallosCama:840,erradicaciones:40,mediosCuadros:16,horaInicio:"08:42",horaFin:"10:02"},
+  {desbotonador:"Diana Gómez",tipoLabor:"Desbotón Spider",bloque:"B3",cama:"21",tallosCama:820,erradicaciones:35,mediosCuadros:16,horaInicio:"07:00",horaFin:"08:20",descuentoTiempo:0,fecha:"24/09/2026"},
+  {desbotonador:"Diana Gómez",tipoLabor:"Desbotón Spider",bloque:"B3",cama:"22",tallosCama:790,erradicaciones:30,mediosCuadros:10,horaInicio:"08:25",horaFin:"09:15",descuentoTiempo:0,fecha:"24/09/2026"},
+  {desbotonador:"Laura Pérez",tipoLabor:"Desbotón Spider",bloque:"B4",cama:"5",tallosCama:860,erradicaciones:42,mediosCuadros:16,horaInicio:"07:15",horaFin:"08:35",descuentoTiempo:0,fecha:"24/09/2026"},
+  {desbotonador:"Laura Pérez",tipoLabor:"Desbotón Spider",bloque:"B4",cama:"6",tallosCama:840,erradicaciones:40,mediosCuadros:16,horaInicio:"08:42",horaFin:"10:02",descuentoTiempo:0,fecha:"24/09/2026"},
 
-  {desbotonador:"Ana López",tipoLabor:"Malla",bloque:"B5",cama:"30",tallosCama:1180,erradicaciones:55,mediosCuadros:16,horaInicio:"09:00",horaFin:"10:05"},
-  {desbotonador:"Ana López",tipoLabor:"Malla",bloque:"B5",cama:"31",tallosCama:1200,erradicaciones:48,mediosCuadros:8,horaInicio:"10:10",horaFin:"10:42"},
-  {desbotonador:"Miguel Torres",tipoLabor:"Malla",bloque:"B6",cama:"14",tallosCama:1250,erradicaciones:62,mediosCuadros:16,horaInicio:"07:20",horaFin:"08:28"},
-  {desbotonador:"Miguel Torres",tipoLabor:"Malla",bloque:"B6",cama:"15",tallosCama:1210,erradicaciones:50,mediosCuadros:14,horaInicio:"08:35",horaFin:"09:35"}
+  {desbotonador:"Ana López",tipoLabor:"Malla",bloque:"B5",cama:"30",tallosCama:1180,erradicaciones:55,mediosCuadros:16,horaInicio:"09:00",horaFin:"10:05",descuentoTiempo:0,fecha:"24/09/2026"},
+  {desbotonador:"Ana López",tipoLabor:"Malla",bloque:"B5",cama:"31",tallosCama:1200,erradicaciones:48,mediosCuadros:8,horaInicio:"10:10",horaFin:"10:42",descuentoTiempo:0,fecha:"24/09/2026"},
+  {desbotonador:"Miguel Torres",tipoLabor:"Malla",bloque:"B6",cama:"14",tallosCama:1250,erradicaciones:62,mediosCuadros:16,horaInicio:"07:20",horaFin:"08:28",descuentoTiempo:0,fecha:"24/09/2026"},
+  {desbotonador:"Miguel Torres",tipoLabor:"Malla",bloque:"B6",cama:"15",tallosCama:1210,erradicaciones:50,mediosCuadros:14,horaInicio:"08:35",horaFin:"09:35",descuentoTiempo:0,fecha:"24/09/2026"}
 ];
 
 registros=datosPrueba.map(item=>{
@@ -76,6 +82,7 @@ function limpiarCamposCama(){
   document.getElementById("mediosCuadros").value=16;
   document.getElementById("horaInicio").value="";
   document.getElementById("horaFin").value="";
+  document.getElementById("descuentoTiempo").value=0;
   document.getElementById("bloque").focus();
 }
 
@@ -85,11 +92,55 @@ function renderTablaTipo(tipo,tabla,nombre){
     .sort((a,b)=>a.desbotonador.localeCompare(b.desbotonador,"es"));
 
   if(filtrados.length===0){
-    tabla.innerHTML='<tr class="empty-row"><td colspan="7">Todavía no hay registros de '+nombre+'.</td></tr>';
+    tabla.innerHTML='<tr class="empty-row"><td colspan="12">Todavía no hay registros de '+nombre+'.</td></tr>';
     return;
   }
 
-  tabla.innerHTML=filtrados.map(r=>'<tr><td><strong>'+r.desbotonador+'</strong></td><td>'+r.bloque+'</td><td>'+r.cama+'</td><td>'+numero(r.mediosCuadros)+'</td><td>'+numero(r.resultado.tallosDesbotonados,2)+'</td><td>'+numero(r.resultado.horasTrabajadas,2)+' h</td><td><strong>'+numero(r.resultado.rendimiento,2)+' tallos/h</strong></td></tr>').join("");
+  const grupos={};
+  filtrados.forEach(r=>{
+    if(!grupos[r.desbotonador]) grupos[r.desbotonador]=[];
+    grupos[r.desbotonador].push(r);
+  });
+
+  let html="";
+
+  Object.entries(grupos).forEach(([colaborador,filas])=>{
+    const totalTallos=filas.reduce((s,r)=>s+r.resultado.tallosDesbotonados,0);
+    const totalHoras=filas.reduce((s,r)=>s+r.resultado.horasTrabajadas,0);
+    const descuentoTotal=filas.reduce((s,r)=>s+(r.descuentoTiempo||0),0);
+    const rendimiento=totalHoras>0 ? totalTallos/totalHoras : 0;
+    const inicio=filas.map(r=>r.horaInicio).sort()[0];
+    const fin=filas.map(r=>r.horaFin).sort().slice(-1)[0];
+    const fecha=filas[0].fecha||fechaHoy();
+
+    filas.forEach((r,index)=>{
+      html+='<tr class="'+(index===0?'group-start':'')+'">';
+
+      if(index===0){
+        const span=filas.length;
+        html+='<td rowspan="'+span+'" class="group-cell">'+fecha+'</td>';
+        html+='<td rowspan="'+span+'" class="group-cell collaborator-cell"><strong>'+colaborador+'</strong></td>';
+        html+='<td rowspan="'+span+'" class="group-cell">'+inicio+'</td>';
+        html+='<td rowspan="'+span+'" class="group-cell">'+fin+'</td>';
+        html+='<td rowspan="'+span+'" class="group-cell">'+numero(descuentoTotal,2)+'</td>';
+        html+='<td rowspan="'+span+'" class="group-cell">'+numero(totalHoras,2)+'</td>';
+      }
+
+      html+='<td>'+r.bloque+'</td>';
+      html+='<td>'+r.cama+'</td>';
+      html+='<td>'+numero(r.resultado.tallosReales,0)+'</td>';
+      html+='<td>'+numero(r.resultado.tallosPorMedioCuadro,0)+'</td>';
+      html+='<td>'+numero(r.mediosCuadros,1)+'</td>';
+
+      if(index===0){
+        html+='<td rowspan="'+filas.length+'" class="group-cell rendimiento-cell"><strong>'+numero(rendimiento,0)+'</strong></td>';
+      }
+
+      html+='</tr>';
+    });
+  });
+
+  tabla.innerHTML=html;
 }
 
 function activarTab(tipo){
@@ -159,7 +210,9 @@ form.addEventListener("submit",event=>{
     erradicaciones:Number(document.getElementById("erradicaciones").value),
     mediosCuadros:Number(document.getElementById("mediosCuadros").value),
     horaInicio:document.getElementById("horaInicio").value,
-    horaFin:document.getElementById("horaFin").value
+    horaFin:document.getElementById("horaFin").value,
+    descuentoTiempo:Number(document.getElementById("descuentoTiempo").value),
+    fecha:fechaHoy()
   };
 
   try{
