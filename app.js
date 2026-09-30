@@ -96,6 +96,15 @@ function limpiarCamposCama(){
   document.getElementById("bloque").focus();
 }
 
+function claseRendimiento(tipo,rendimiento){
+  if(tipo==="Desbotón Pompón"){
+    if(rendimiento>=5100) return "";
+    if(rendimiento>=5000) return "rendimiento-amarillo";
+    return "rendimiento-rojo";
+  }
+  return "";
+}
+
 function renderTablaTipo(tipo,tabla,nombre){
   const filtrados=registros
     .filter(r=>r.tipoLabor===tipo)
@@ -148,7 +157,8 @@ function renderTablaTipo(tipo,tabla,nombre){
       html+='<td>'+numero(r.mediosCuadros,1)+'</td>';
 
       if(index===0){
-        html+='<td rowspan="'+filas.length+'" class="group-cell rendimiento-cell"><strong>'+numero(rendimiento,0)+'</strong></td>';
+        const clase=claseRendimiento(tipo,rendimiento);
+        html+='<td rowspan="'+filas.length+'" class="group-cell rendimiento-cell '+clase+'"><strong>'+numero(rendimiento,0)+'</strong></td>';
       }
 
       html+='</tr>';
