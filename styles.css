@@ -6,3 +6,6 @@ td{vertical-align:middle}
 .collaborator-cell{text-align:left;min-width:190px}
 .rendimiento-cell{font-size:1.05rem}
 .group-start td{border-top:2px solid #1f2937}
+
+.rendimiento-amarillo{background:#fff3bf!important;color:#7a5b00}
+.rendimiento-rojo{background:#ffd6d6!important;color:#9f1239}
