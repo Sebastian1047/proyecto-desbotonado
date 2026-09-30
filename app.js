@@ -96,11 +96,11 @@ function limpiarCamposCama(){
   document.getElementById("bloque").focus();
 }
 
-function claseRendimiento(tipo,rendimiento){
+function estiloRendimiento(tipo,rendimiento){
   if(tipo==="Desbotón Pompón"){
     if(rendimiento>=5100) return "";
-    if(rendimiento>=5000) return "rendimiento-amarillo";
-    return "rendimiento-rojo";
+    if(rendimiento>=5000) return "background:#fff3bf;color:#7a5b00;";
+    return "background:#ffd6d6;color:#9f1239;";
   }
   return "";
 }
@@ -157,8 +157,8 @@ function renderTablaTipo(tipo,tabla,nombre){
       html+='<td>'+numero(r.mediosCuadros,1)+'</td>';
 
       if(index===0){
-        const clase=claseRendimiento(tipo,rendimiento);
-        html+='<td rowspan="'+filas.length+'" class="group-cell rendimiento-cell '+clase+'"><strong>'+numero(rendimiento,0)+'</strong></td>';
+        const estilo=estiloRendimiento(tipo,rendimiento);
+        html+='<td rowspan="'+filas.length+'" class="group-cell rendimiento-cell" style="'+estilo+'"><strong>'+numero(rendimiento,0)+'</strong></td>';
       }
 
       html+='</tr>';
