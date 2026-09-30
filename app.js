@@ -115,12 +115,16 @@ function renderTablaTipo(tipo,tabla,nombre){
   let html="";
 
   Object.entries(grupos).forEach(([colaborador,filas])=>{
-    const totalTallos=filas.reduce((s,r)=>s+r.resultado.tallosDesbotonados,0);
-    const totalHoras=filas.reduce((s,r)=>s+r.resultado.horasTrabajadas,0);
-    const descuentoTotal=filas.reduce((s,r)=>s+(r.descuentoTiempo||0),0);
-    const rendimiento=totalHoras>0 ? totalTallos/totalHoras : 0;
+    const totalTallos=filas.reduce(
+      (s,r)=>s+(r.resultado.tallosPorMedioCuadro*r.mediosCuadros),
+      0
+    );
+
     const inicio=filas.map(r=>r.horaInicio).sort()[0];
     const fin=filas.map(r=>r.horaFin).sort().slice(-1)[0];
+    const descuentoTotal=filas.reduce((s,r)=>s+(r.descuentoTiempo||0),0);
+    const totalHoras=horasEntre(inicio,fin)-descuentoTotal;
+    const rendimiento=totalHoras>0 ? totalTallos/totalHoras : 0;
     const fecha=filas[0].fecha||fechaHoy();
 
     filas.forEach((r,index)=>{
