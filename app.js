@@ -99,14 +99,14 @@ function limpiarCamposCama(){
 function estiloRendimiento(tipo,rendimiento){
   if(tipo==="Desbotón Pompón"){
     if(rendimiento>=5100) return "";
-    if(rendimiento>=5000) return "background-color:#fff3bf !important;color:#7a5b00 !important;";
-    return "background-color:#ffd6d6 !important;color:#9f1239 !important;";
+    if(rendimiento>=5000) return "background-color:rgb(255,235,59);color:#111;";
+    return "background-color:rgb(255,99,99);color:#111;";
   }
 
   if(tipo==="Desbotón Spider"){
     if(rendimiento>=460) return "";
-    if(rendimiento>=430) return "background-color:#fff3bf !important;color:#7a5b00 !important;";
-    return "background-color:#ffd6d6 !important;color:#9f1239 !important;";
+    if(rendimiento>=430) return "background-color:rgb(255,235,59);color:#111;";
+    return "background-color:rgb(255,99,99);color:#111;";
   }
 
   return "";
