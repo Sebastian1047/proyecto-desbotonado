@@ -102,6 +102,13 @@ function estiloRendimiento(tipo,rendimiento){
     if(rendimiento>=5000) return "background-color:#fff3bf !important;color:#7a5b00 !important;";
     return "background-color:#ffd6d6 !important;color:#9f1239 !important;";
   }
+
+  if(tipo==="Desbotón Spider"){
+    if(rendimiento>=460) return "";
+    if(rendimiento>=430) return "background-color:#fff3bf !important;color:#7a5b00 !important;";
+    return "background-color:#ffd6d6 !important;color:#9f1239 !important;";
+  }
+
   return "";
 }
 
